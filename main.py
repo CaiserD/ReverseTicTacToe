@@ -10,15 +10,20 @@ pg.init()
 class GameLogic:
     def __init__(self, game):
         self.game = game
-        self.field_image = self.get_scaled_image()
+        self.field_image = self.get_scaled_image(path='Resource/field.png', res=[WIN_SIZE] * 2)
 
+    #Display the Pictures
+    def draw(self):
+        self.game.screen.blit(self.field_image, (0, 0))
+        
+    #Importing Pictures
     @staticmethod
     def get_scaled_image(path, res):
         img = pg.image.load(path)
         return pg.transform.smoothscale(img, res)
-
+    
     def run(self):
-        pass
+        self.draw()
 
 
 class Game():
