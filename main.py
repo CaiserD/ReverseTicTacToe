@@ -16,11 +16,21 @@ class GameLogic:
         self.X_image = self.get_scaled_image(path='Resource/x.png', res =[CELL_SIZE] * 2)
         
         #1 mean X and 0 means O, otherwise all empty spaces are infinity (INF)
-        self.game_array = [[INF], [INF], [INF],
-                           [INF], [INF], [INF],
-                           [INF], [INF], [INF]]
-        self.player = randint(0,1)
+        self.game_array = [[INF, INF, INF],
+                           [INF, INF, INF],
+                           [INF, INF, INF]]
+        self.player = randint(0, 1)
         
+    #Launching the Game Main Process    
+    def run_game_process(self):
+        current_cell = vec2(pg.mouse.get_pos()) // CELL_SIZE
+        col, row = map(int, current_cell)
+        left_click = pg.mouse.get_pressed()[0]
+        
+        if left_click and self.game_array[row][col] == INF:
+            self.game_array[row][col] = self.player
+            self.player = not self.player
+
     #Display Gameplay
     def draw_objects(self):
         for y, row in enumerate(self.game_array):
@@ -31,6 +41,7 @@ class GameLogic:
     #Display the Pictures
     def draw(self):
         self.game.screen.blit(self.field_image, (0, 0))
+        self.draw_objects()
         
     #Importing Pictures
     @staticmethod
@@ -38,8 +49,15 @@ class GameLogic:
         img = pg.image.load(path)
         return pg.transform.smoothscale(img, res)
     
+    #Print Current Player as Caption of the Window
+    def print_caption(self):
+        pg.display.set_caption(f'Player "{"OX"[self.player]}" turn!')
+    
+    #General Run Method
     def run(self):
+        self.print_caption()
         self.draw()
+        self.run_game_process()
 
 
 class Game():
