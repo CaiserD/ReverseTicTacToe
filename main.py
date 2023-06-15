@@ -21,16 +21,38 @@ class GameLogic:
                            [INF, INF, INF]]
         self.player = randint(0, 1)
         
+        #Create an Array of Indices for each line being checked
+        self.line_indices_array = [[(0, 0), (0, 1), (0, 2),
+                                    (1, 0), (1, 1), (1, 2),
+                                    (2, 0), (2, 1), (2, 2),
+                                    (0, 0), (1, 0), (2, 0),
+                                    (0, 1), (1, 1), (2, 1),
+                                    (0, 2), (1, 2), (2, 2),
+                                    (0, 0), (1, 1), (2, 2),
+                                    (0, 2), (1, 1), (2, 0)]]
+        
+        #Variables for the winner and the number of steps taken in the game
+        self.winner = None
+        self.game_steps = 0
+        
+    #Check if there is winner
+    def check_winner(self):
+        for line_indices in self.line_indices_array:
+            sum_line = sum([self.game[i][j] for i, j in line_indices])
+            if sum_line in {0, 3}:
+                self.winner = "XO"[sum_line == 0]
+    
     #Launching the Game Main Process    
     def run_game_process(self):
         current_cell = vec2(pg.mouse.get_pos()) // CELL_SIZE
         col, row = map(int, current_cell)
         left_click = pg.mouse.get_pressed()[0]
         
-        if left_click and self.game_array[row][col] == INF:
+        if left_click and self.game_array[row][col] == INF and not self.winner:
             self.game_array[row][col] = self.player
             self.player = not self.player
-
+            self.game_steps += 1
+            
     #Display Gameplay
     def draw_objects(self):
         for y, row in enumerate(self.game_array):
