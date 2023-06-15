@@ -3,8 +3,9 @@ import sys
 from random import randint
 
 WIN_SIZE = 900
-
-pg.init()
+CELL_SIZE = WIN_SIZE // 3
+INF = float('inf')
+vec2 = pg.math.Vector2
 
 
 class GameLogic:
@@ -14,6 +15,18 @@ class GameLogic:
         self.O_image = self.get_scaled_image(path='Resource/o.png', res =[CELL_SIZE] * 2)
         self.X_image = self.get_scaled_image(path='Resource/x.png', res =[CELL_SIZE] * 2)
         
+        #1 mean X and 0 means O, otherwise all empty spaces are infinity (INF)
+        self.game_array = [[INF], [INF], [INF],
+                           [INF], [INF], [INF],
+                           [INF], [INF], [INF]]
+        self.player = randint(0,1)
+        
+    #Display Gameplay
+    def draw_objects(self):
+        for y, row in enumerate(self.game_array):
+            for x, obj in enumerate(row):
+                if obj != INF:
+                    self.game.screen.blit(self.X_image if obj else self.O_image, vec2(x, y) * CELL_SIZE)
         
     #Display the Pictures
     def draw(self):
