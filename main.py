@@ -6,6 +6,7 @@ WIN_SIZE = 900
 CELL_SIZE = WIN_SIZE // 3
 INF = float('inf')
 vec2 = pg.math.Vector2
+CELL_CENTER = vec2(CELL_SIZE / 2)
 
 
 class GameLogic:
@@ -31,16 +32,18 @@ class GameLogic:
                                     [(0, 0), (1, 1), (2, 2)],
                                     [(0, 2), (1, 1), (2, 0)]]
         
-        #Variables for the winner and the number of steps taken in the game
-        self.winner = None
+        #Variables for the loser and the number of steps taken in the game
+        self.loser = None
         self.game_steps = 0
         
-    #Check if there is winner
-    def check_winner(self):
+    #Check if there is loser
+    def check_loser(self):
         for line_indices in self.line_indices_array:
             sum_line = sum([self.game_array[i][j] for i, j in line_indices])
             if sum_line in {0, 3}:
-                self.winner = 'XO'[sum_line == 0]
+                self.loser = 'XO'[sum_line == 0]
+                self.loser_line = [vec2(line_indices[0][::-1]) * CELL_SIZE + CELL_CENTER,
+                                    vec2(line_indices[0][::-1]) * CELL_SIZE * CELL_CENTER]
     
     #Launching the Game Main Process    
     def run_game_process(self):
@@ -48,11 +51,11 @@ class GameLogic:
         col, row = map(int, current_cell)
         left_click = pg.mouse.get_pressed()[0]
         
-        if left_click and self.game_array[row][col] == INF and not self.winner:
+        if left_click and self.game_array[row][col] == INF and not self.loser:
             self.game_array[row][col] = self.player
             self.player = not self.player
             self.game_steps += 1
-            self.check_winner()
+            self.check_loser()
             
     #Display Gameplay
     def draw_objects(self):
@@ -60,11 +63,17 @@ class GameLogic:
             for x, obj in enumerate(row):
                 if obj != INF:
                     self.game.screen.blit(self.X_image if obj else self.O_image, vec2(x, y) * CELL_SIZE)
-        
+
+    #Check prescence of loser
+    def draw_loser(self):
+        if self.loser:
+            pg.draw.line(self.game.screen, 'red', *self.loser_line, CELL_SIZE // 8)
+    
     #Display the Pictures
     def draw(self):
         self.game.screen.blit(self.field_image, (0, 0))
         self.draw_objects()
+        self.draw_loser()
         
     #Importing Pictures
     @staticmethod
