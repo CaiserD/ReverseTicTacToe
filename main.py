@@ -11,7 +11,10 @@ class GameLogic:
     def __init__(self, game):
         self.game = game
         self.field_image = self.get_scaled_image(path='Resource/field.png', res=[WIN_SIZE] * 2)
-
+        self.O_image = self.get_scaled_image(path='Resource/o.png', res =[CELL_SIZE] * 2)
+        self.X_image = self.get_scaled_image(path='Resource/x.png', res =[CELL_SIZE] * 2)
+        
+        
     #Display the Pictures
     def draw(self):
         self.game.screen.blit(self.field_image, (0, 0))
