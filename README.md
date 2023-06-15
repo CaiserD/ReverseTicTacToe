@@ -1,5 +1,7 @@
 # ReverseTicTacToe
 
+*** THE GAME RESTARTS IF YOU PRESS SPACEBAR ***
+
 This is a Game made with PYGAME
 
 GAME RULE:
