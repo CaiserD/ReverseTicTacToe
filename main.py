@@ -4,12 +4,12 @@ from random import randint
 
 WIN_SIZE = 900
 
-pygame.init()
+pg.init()
 
 class Game(): 
     def __init__(self):
         pg.init()
-        self.screen = pg.display.set_mod([WIN_SIZE] * 2)
+        self.screen = pg.display.set_mode([WIN_SIZE] * 2)
         self.clock = pg.time.Clock()
     
     #Check Exit from Application
