@@ -22,14 +22,14 @@ class GameLogic:
         self.player = randint(0, 1)
         
         #Create an Array of Indices for each line being checked
-        self.line_indices_array = [[(0, 0), (0, 1), (0, 2),
-                                    (1, 0), (1, 1), (1, 2),
-                                    (2, 0), (2, 1), (2, 2),
-                                    (0, 0), (1, 0), (2, 0),
-                                    (0, 1), (1, 1), (2, 1),
-                                    (0, 2), (1, 2), (2, 2),
-                                    (0, 0), (1, 1), (2, 2),
-                                    (0, 2), (1, 1), (2, 0)]]
+        self.line_indices_array = [[(0, 0), (0, 1), (0, 2)],
+                                    [(1, 0), (1, 1), (1, 2)],
+                                    [(2, 0), (2, 1), (2, 2)],
+                                    [(0, 0), (1, 0), (2, 0)],
+                                    [(0, 1), (1, 1), (2, 1)],
+                                    [(0, 2), (1, 2), (2, 2)],
+                                    [(0, 0), (1, 1), (2, 2)],
+                                    [(0, 2), (1, 1), (2, 0)]]
         
         #Variables for the winner and the number of steps taken in the game
         self.winner = None
@@ -38,9 +38,9 @@ class GameLogic:
     #Check if there is winner
     def check_winner(self):
         for line_indices in self.line_indices_array:
-            sum_line = sum([self.game[i][j] for i, j in line_indices])
+            sum_line = sum([self.game_array[i][j] for i, j in line_indices])
             if sum_line in {0, 3}:
-                self.winner = "XO"[sum_line == 0]
+                self.winner = 'XO'[sum_line == 0]
     
     #Launching the Game Main Process    
     def run_game_process(self):
@@ -52,6 +52,7 @@ class GameLogic:
             self.game_array[row][col] = self.player
             self.player = not self.player
             self.game_steps += 1
+            self.check_winner()
             
     #Display Gameplay
     def draw_objects(self):
